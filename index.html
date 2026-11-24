@@ -226,7 +226,7 @@ const D = {
   coffee:{t:'Stampo',g:'QR',bg:G.gold,badge:'LIVE DATABASE',m:'Full-stack app',y:'2026',
     p:'A digital loyalty stamp card for coffee shops. Customers sign in with their phone, show a QR code at the till and collect stamps towards free coffee and rewards. Vendors scan the code to give a stamp once their shop is approved.',
     l:['Supabase (PostgreSQL) database with 8 tables: profiles, vendors, stamps, rewards, transactions, subscriptions and admins','Row Level Security on every table, managed through 12 SQL migrations','Separate customer and vendor dashboards, with phone sign-in and QR stamping'],
-    c:['Supabase','PostgreSQL','React','TypeScript'],a:['View repository','https://github.com/Rsts24/stampo-crypto-buddy']},
+    c:['Supabase','PostgreSQL','React','TypeScript'],a:['Try the app','https://stampo-stamps.lovable.app'],a2:['View repository','https://github.com/Rsts24/stampo-crypto-buddy']},
   greet:{t:'Occasion Greetings Page',g:'WEB',bg:G.plum,m:'Web',y:'2025',
     p:'A dynamic greetings page for a special occasion, deployed on Netlify.',
     l:['Built and deployed as a live web page','Uses dynamic content instead of a static card'],
@@ -298,7 +298,7 @@ const open = k => { const d=D[k]; if(!d) return; lastFocus=document.activeElemen
   document.getElementById('mP').textContent=d.p;
   document.getElementById('mL').innerHTML=d.l.map(x=>`<li>${esc(x)}</li>`).join('');
   document.getElementById('mC').innerHTML=d.c.map(x=>`<span>${esc(x)}</span>`).join('');
-  document.getElementById('mA').innerHTML=d.a?`<a class="btn pri" href="${esc(d.a[1])}">${esc(d.a[0])}</a>`:'';
+  document.getElementById('mA').innerHTML='<div class="btns">'+(d.a?`<a class="btn pri" href="${esc(d.a[1])}">${esc(d.a[0])}</a>`:'')+(d.a2?`<a class="btn sec" href="${esc(d.a2[1])}">${esc(d.a2[0])}</a>`:'')+'</div>';
   modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.getElementById('mClose').focus(); };
 const close = () => { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); if(lastFocus) lastFocus.focus(); };
 document.addEventListener('click',e=>{ const o=e.target.closest('[data-open]'); if(o){open(o.dataset.open);return;} if(e.target===modal) close(); });
