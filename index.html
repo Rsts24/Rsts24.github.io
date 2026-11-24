@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ritesh Shetty Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a late-night streaming home screen, confident and cinematic, but every word is a real fact
+   IDEA: the career as a catalogue: a featured title, rows of projects, an "experience series" with episodes
+   PICTURE: a glowing data-landscape SVG behind the featured title (bars, a trend line, a horizon)
+   COLOUR and TYPE: near-black #0b0d12 with deep teal fields and one sharp teal accent; Syne wordmark/titles + Inter
+   LAYOUT: fixed top bar, full-bleed hero, horizontal snap rows, detail modal, contact footer */
+:root{color-scheme:dark;transition:none;--bg:#0b0d12;--bg2:#141821;--card:#1b202b;--ink:#eef1f5;--mute:#9aa3b2;--acc:#1fd1b0;--acc2:#0f6e64;--line:#262c38}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+h1,h2,h3,.brand{font-family:Syne,Inter,sans-serif}
+
+/* top bar */
+.top{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:28px;padding:14px max(4vw,16px);background:linear-gradient(#0b0d12f2,#0b0d1200);transition:background .3s}
+.top.solid{background:#0b0d12}
+.brand{font-weight:800;font-size:26px;letter-spacing:.02em;color:var(--acc);text-decoration:none;line-height:1}
+.brand span{color:var(--ink)}
+main{display:flex;flex-direction:column}
+.row.off{display:none}
+.hero-in>*{animation:fade .5s ease-out both}@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+.nav{display:flex;gap:20px;flex-wrap:wrap;font-size:15px}
+.nav a{text-decoration:none;color:#d5dae2}.nav a:hover{color:#fff}
+.who{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mute);cursor:pointer}
+.av{width:34px;height:34px;border-radius:6px;display:grid;place-items:center;font-weight:700;color:#0b0d12}
+
+/* profile picker */
+.gate{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;text-align:center;padding:24px}
+.gate.hide{display:none}
+.gate h2{font-size:clamp(30px,5vw,50px);font-weight:700;margin:0 0 32px;line-height:1.05}
+.profiles{display:flex;gap:clamp(16px,3vw,36px);justify-content:center;flex-wrap:wrap}
+.prof{background:none;border:0;color:var(--mute);display:grid;justify-items:center;gap:12px;padding:6px;font-size:17px}
+.prof .av{width:clamp(96px,14vw,140px);height:clamp(96px,14vw,140px);border-radius:10px;font-size:40px;font-family:Syne,sans-serif;border:3px solid transparent;transition:border-color .2s,transform .2s}
+.prof:hover,.prof:focus-visible{color:#fff}.prof:hover .av,.prof:focus-visible .av{border-color:#fff;transform:scale(1.04)}
+.gate small{display:block;margin-top:40px;color:#5d6676;font-size:13px}
+
+/* hero */
+.hero{position:relative;min-height:min(88vh,760px);display:flex;align-items:flex-end;padding:120px max(4vw,16px) clamp(48px,8vh,90px);overflow:hidden}
+.hero svg{position:absolute;inset:0;width:100%;height:100%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0b0d12 0%,#0b0d12cc 32%,#0b0d1200 70%),linear-gradient(0deg,#0b0d12 0%,#0b0d1200 35%)}
+.hero-in{position:relative;z-index:2;max-width:620px}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--acc)}
+.tag b{background:var(--acc);color:#0b0d12;padding:2px 7px;border-radius:4px;font-size:12px}
+.hero h1{font-size:clamp(36px,6vw,64px);line-height:1.02;margin:12px 0 14px;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:15px;color:#cfd5de;margin-bottom:14px}
+.meta .m{color:var(--acc);font-weight:700}
+.meta .pill{border:1px solid #5d6676;padding:0 6px;border-radius:4px;font-size:13px}
+.hero p{font-size:17px;color:#d9dee6;margin:0 0 24px;max-width:56ch}
+.greet{color:var(--mute);font-size:15px;margin:0 0 6px;min-height:1.5em}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 24px;border-radius:6px;border:0;font-weight:700;font-size:16px;text-decoration:none}
+.btn.pri{background:#fff;color:#0b0d12}.btn.pri:hover{background:#dfe4ea}
+.btn.sec{background:#6b748480;color:#fff}.btn.sec:hover{background:#6b7484b0}
+.btn svg{width:18px;height:18px}
+
+/* rows */
+.row{padding:10px 0 26px;position:relative}
+.row h2{font-size:clamp(20px,2.4vw,26px);margin:0 max(4vw,16px) 12px;font-weight:700}
+.row h2 small{font:500 14px Inter,sans-serif;color:var(--mute);margin-left:10px}
+.track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px max(4vw,16px) 14px;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.card{flex:0 0 clamp(230px,24vw,300px);scroll-snap-align:start;background:var(--card);border:0;border-radius:8px;overflow:hidden;color:var(--ink);text-align:left;padding:0;transition:transform .25s,box-shadow .25s}
+.card:hover,.card:focus-visible{transform:scale(1.04);box-shadow:0 14px 40px #000a;z-index:2}
+.thumb{aspect-ratio:16/9;position:relative;display:flex;align-items:flex-end;padding:12px;overflow:hidden}
+.thumb .g{position:absolute;right:-6px;top:-14px;font:800 74px/1 Syne,sans-serif;opacity:.22;color:#fff}
+.thumb h3{position:relative;margin:0;font-size:19px;line-height:1.1;text-shadow:0 2px 10px #0008}
+.thumb .badge{position:absolute;left:10px;top:10px;font-size:11px;font-weight:700;background:#0b0d12cc;padding:3px 7px;border-radius:4px;color:var(--acc)}
+.cbody{padding:10px 12px 14px;font-size:14px;color:var(--mute)}
+.cbody .m{color:var(--acc);font-weight:700;margin-right:6px}
+.arrow{position:absolute;top:50px;bottom:40px;width:max(4vw,16px);min-width:44px;border:0;background:#0b0d12a0;color:#fff;font-size:28px;z-index:3;opacity:0;transition:opacity .2s}
+.row:hover .arrow,.arrow:focus-visible{opacity:1}
+.arrow.l{left:0}.arrow.r{right:0}
+@media (hover:none){.arrow{display:none}}
+
+/* numbered results row */
+.num{flex:0 0 clamp(250px,26vw,320px);scroll-snap-align:start;display:flex;align-items:center;gap:0;border:0;background:none;color:var(--ink);padding:0;text-align:left}
+.num .n{font:800 clamp(120px,13vw,170px)/.8 Syne,sans-serif;color:var(--bg);-webkit-text-stroke:3px #5d6676;margin-right:-22px;position:relative}
+.num .box{position:relative;flex:1;background:linear-gradient(160deg,var(--acc2),#12202a);border-radius:8px;padding:16px;aspect-ratio:3/4;max-height:200px;display:flex;flex-direction:column;justify-content:flex-end}
+.num .big{font:800 44px/1 Syne,sans-serif;color:var(--acc)}
+.num .box span{font-size:14px;color:#d9dee6;line-height:1.35;margin-top:6px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:40;background:#000b;display:none;place-items:start center;overflow-y:auto;padding:5vh 12px}
+.modal.open{display:grid}
+.sheet{width:min(780px,100%);background:var(--bg2);border-radius:10px;overflow:hidden;box-shadow:0 30px 80px #000}
+.sheet .thumb{aspect-ratio:21/8;padding:22px}
+.sheet .thumb h3{font-size:clamp(26px,4vw,38px)}
+.sheet .thumb .g{font-size:150px;top:-30px}
+.close{position:absolute;right:12px;top:12px;width:44px;height:44px;border-radius:50%;border:0;background:#0b0d12;color:#fff;font-size:22px;z-index:2}
+.sbody{padding:20px clamp(18px,3vw,32px) 28px}
+.sbody ul{padding-left:20px;margin:12px 0}.sbody li{margin:6px 0;color:#d9dee6}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chips span{font-size:13px;background:#262c38;padding:4px 10px;border-radius:20px;color:#cfd5de}
+
+/* contact */
+.contact{margin:30px max(4vw,16px) 0;padding:clamp(28px,5vw,56px);border-radius:12px;background:radial-gradient(120% 140% at 100% 0%,#0f6e64 0%,#12202a 45%,#141821 80%);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:center}
+.contact h2{font-size:clamp(28px,4vw,44px);line-height:1.05;margin:0 0 10px}
+.contact p{color:#cfd5de;margin:0}
+.links{display:grid;gap:10px}
+.links a{display:flex;justify-content:space-between;align-items:center;min-height:48px;padding:0 18px;border-radius:8px;background:#0b0d12a0;text-decoration:none;font-weight:600}
+.links a:hover{background:#0b0d12}
+.links a span{color:var(--mute);font-weight:400;font-size:14px;overflow-wrap:anywhere;text-align:right}
+footer{padding:28px max(4vw,16px) 40px;color:#5d6676;font-size:13px}
+@media(max-width:700px){.nav{display:none}.contact{grid-template-columns:1fr}.hero{min-height:auto;padding-top:96px}.hero::after{background:linear-gradient(0deg,#0b0d12 10%,#0b0d12aa 60%,#0b0d1240)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.rise{animation:none!important}}
+.rise{animation:rise 1.2s ease-out both}@keyframes rise{from{transform:scaleY(0)}}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateT">
+  <div>
+    <h2 id="gateT">Who's browsing?</h2>
+    <div class="profiles">
+      <button class="prof" data-who="Recruiter"><span class="av" style="background:#1fd1b0">R</span>Recruiter</button>
+      <button class="prof" data-who="Hiring manager"><span class="av" style="background:#f2b544">H</span>Hiring manager</button>
+      <button class="prof" data-who="Client"><span class="av" style="background:#7aa7ff">C</span>Client</button>
+    </div>
+    <small>An interactive CV by Ritesh Shetty · not affiliated with any streaming service</small>
+  </div>
+</div>
+
+<header class="top" id="top">
+  <a class="brand" href="#home">RITESH<span>.</span></a>
+  <nav class="nav"><a href="#home">Home</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#contact">Contact</a></nav>
+  <div class="who" title="Switch profile"><span id="whoName">Guest</span><span class="av" id="whoAv" style="background:#1fd1b0">G</span></div>
+</header>
+
+<section class="hero" id="home">
+  <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="glow" cx="72%" cy="40%" r="60%"><stop offset="0" style="stop-color:var(--acc)" stop-opacity=".35"/><stop offset=".5" stop-color="#0f6e64" stop-opacity=".18"/><stop offset="1" stop-color="#0b0d12" stop-opacity="0"/></radialGradient>
+      <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--acc)"/><stop offset="1" stop-color="#0f6e64" stop-opacity=".15"/></linearGradient>
+      <linearGradient id="bar2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3a4a"/><stop offset="1" stop-color="#141821" stop-opacity=".2"/></linearGradient>
+      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".04"/></pattern>
+    </defs>
+    <rect width="1200" height="700" fill="#0b0d12"/>
+    <rect width="1200" height="700" fill="url(#grid)"/>
+    <rect width="1200" height="700" fill="url(#glow)"/>
+    <g id="bars"></g>
+    <path id="trend" d="" fill="none" stroke="#e9fffb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+    <g id="dots"></g>
+    <line x1="430" y1="600" x2="1200" y2="600" stroke="#ffffff" stroke-opacity=".15"/>
+  </svg>
+  <div class="hero-in">
+    <p class="greet" id="greet"></p>
+    <div id="hero"></div>
+  </div>
+</section>
+
+<main>
+  <section class="row off" id="services">
+    <h2>Services<small>what I can do for your business</small></h2>
+    <div class="track" id="tServices"></div>
+  </section>
+  <section class="row" id="results">
+    <h2>Top results<small>numbers from real roles</small></h2>
+    <div class="track" id="tResults"></div>
+  </section>
+  <section class="row" id="projects">
+    <h2>Projects</h2>
+    <div class="track" id="tProjects"></div>
+  </section>
+  <section class="row" id="experience">
+    <h2>Experience: the series<small>5 episodes</small></h2>
+    <div class="track" id="tExp"></div>
+  </section>
+  <section class="row" id="skills">
+    <h2>Skills &amp; certifications</h2>
+    <div class="track" id="tSkills"></div>
+  </section>
+
+  <section class="contact" id="contact" style="order:99">
+    <div>
+      <h2 id="cT">Ready to start watching?</h2>
+      <p id="cP">I'm looking for Excel, SQL and data automation roles in the UK, and I take freelance work too. I'm based in Slough and happy to go into the office in London or Berkshire.</p>
+    </div>
+    <div class="links" id="cLinks">
+      <a href="mailto:rworkrs@gmail.com">Email<span>rworkrs@gmail.com</span></a>
+      <a href="https://www.linkedin.com/in/rks258">LinkedIn<span>linkedin.com/in/rks258</span></a>
+      <a href="https://github.com/Rsts24">GitHub<span>github.com/Rsts24</span></a>
+      <a href="https://www.upwork.com/freelancers/~01caf4e3e60160f363">Upwork<span>Hire me</span></a>
+    </div>
+  </section>
+</main>
+<footer>© 2026 Ritesh Shetty · A streaming-style portfolio, built by hand · not affiliated with any streaming service</footer>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mT" style="position:relative">
+    <button class="close" id="mClose" aria-label="Close">×</button>
+    <div class="thumb" id="mThumb"><span class="g" id="mG"></span><h3 id="mT"></h3></div>
+    <div class="sbody">
+      <div class="meta" id="mMeta"></div>
+      <p id="mP" style="margin:0;color:#d9dee6"></p>
+      <ul id="mL"></ul>
+      <div class="chips" id="mC"></div>
+      <div id="mA"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+{
+const G = {
+  teal:'linear-gradient(135deg,#0f6e64,#12202a)', gold:'linear-gradient(135deg,#8a5a12,#1d1a14)',
+  blue:'linear-gradient(135deg,#27467e,#141821)', plum:'linear-gradient(135deg,#5a2f6e,#141821)',
+  rust:'linear-gradient(135deg,#7a3a24,#141821)', slate:'linear-gradient(135deg,#33404f,#141821)',
+  green:'linear-gradient(135deg,#2f6b3a,#141821)'
+};
+const D = {
+  sql:{t:'UK Retail Sales Analysis',g:'SQL',bg:G.teal,badge:'FEATURED',m:'SQL deep-dive',y:'2026',
+    p:'An end-to-end SQL analysis of two years of synthetic UK retail data. I designed the schema, generated the data and wrote 9 scripts, each answering a business question.',
+    l:['Revenue trend with month-on-month and year-on-year growth (LAG window functions)','RFM segmentation with NTILE scoring that finds Champions and At-Risk customers','Quarterly cohort retention, market-basket pairs and a churn win-back list','Every finding paired with a recommended action'],
+    c:['SQL','CTEs','Window functions','SQLite','Python'],a:['View repository','https://github.com/Rsts24/uk-retail-sql-analysis']},
+  coffee:{t:'Coffee Stamp Tracker',g:'DB',bg:G.gold,m:'Web app',y:'2025',
+    p:'A digital loyalty-card system for a coffee shop, built with Lovable on top of an Airtable database.',
+    l:['Tracks stamps per customer in Airtable','Low-code build that is quick to change for a small business'],
+    c:['Lovable','Airtable','No-code / low-code'],a:['View project','https://github.com/Rsts24']},
+  greet:{t:'Occasion Greetings Page',g:'WEB',bg:G.plum,m:'Web',y:'2025',
+    p:'A dynamic greetings page for a special occasion, deployed on Netlify.',
+    l:['Built and deployed as a live web page','Uses dynamic content instead of a static card'],
+    c:['HTML/CSS','JavaScript','Netlify'],a:['View project','https://github.com/Rsts24']},
+  sites:{t:'Client Websites ×2',g:'AI',bg:G.blue,m:'Freelance',y:'2024–25',
+    p:'Two websites with AI-powered dynamic features, built start to finish, for an online donation business and a home-services business.',
+    l:['Handled design, development and client consultation','Home-services site covers furniture assembly, garden care, cleaning and Airbnb management'],
+    c:['Web development','AI features','Client consultation']},
+  vba:{t:'Excel VBA Automation Toolkit',g:'VBA',bg:G.green,badge:'COMING SOON',m:'Coming soon',y:'2026',
+    p:'One-click macros that merge, clean and summarise monthly reports, rebuilt on synthetic data from techniques I use at work.',
+    l:['Merge many workbooks into one table','Clean and validate the data, then build a pivot summary automatically'],c:['Excel','VBA','Automation']},
+  py:{t:'Python Excel Report Builder',g:'PY',bg:G.slate,badge:'COMING SOON',m:'Coming soon',y:'2026',
+    p:'A pandas script that turns messy CSVs into a formatted Excel report with charts.',
+    l:['Data cleaning and aggregation with pandas','Formatted output with openpyxl'],c:['Python','pandas','openpyxl']},
+
+  dnata:{t:'L&D Systems & Operations',g:'E1',bg:G.teal,m:'dnata',y:'Jul–Nov 2025',
+    p:'Ran the training data systems and digital workflows for the UK HR & training team.',
+    l:['Built Power Apps and automated workflows (nomination polls, dynamic pivots and charts) that cut manual coordination effort by over 60%','Designed and maintained a central MS Access training database for participation, performance and certifications','Used advanced Excel (macros, batch scripts) to refine raw data into dynamic reports','Main contact between business partners, duty managers and trainers in the UK and global teams'],
+    c:['Power Apps','MS Access','Excel/VBA','Stakeholder management']},
+  doclan:{t:'Mainframe Designer / Data Engineer',g:'E2',bg:G.blue,m:'Doclan Management Service',y:'2022–2024',
+    p:'Automated data processing and documented client infrastructure.',
+    l:['Built internal automation from batch files, SQL queries, VB scripts and open-source tools','Cut data processing time by 50% with Excel pivots, macros and formulas','Used AI tools to auto-generate Visio stencils, and analysed VBA code in Access databases','Produced Visio diagrams of client server, switch and blade-chassis environments'],
+    c:['SQL','VB scripts','Batch scripting','Visio','Excel']},
+  bhavan:{t:'Operations Assistant Manager',g:'E3',bg:G.gold,m:'The Bhavan',y:'2021–present · weekends',
+    p:'Runs platform data and finances, and helps deliver weekly events.',
+    l:['Admin for Salesforce, Shopify and LearnWorlds LMS: user data, enrolments, reporting and GDPR compliance','Root-cause analysis of data issues, with automated fixes to prevent them coming back','Weekly financial analysis, month-end bank reconciliation, payments, refunds and e-invoices','Supported acquisitions and produced Ticketsource reports with cross-functional teams'],
+    c:['Salesforce','Shopify','Reconciliation','GDPR']},
+  dental:{t:'Administrative Manager',g:'E4',bg:G.plum,m:'Private Dental Practice, Wembley',y:'Jan–Mar 2026',
+    p:'Improved daily operations and patient workflows.',
+    l:['Analysed Dentally data to find bottlenecks and improve scheduling','Managed financial admin and CQC, GDPR and health & safety compliance','Coordinated clinician schedules, patient follow-ups and digital engagement'],
+    c:['Dentally','Compliance','Operations']},
+  hit:{t:'Website Developer',g:'E5',bg:G.rust,m:'HIT – The Theatre (student work)',y:'2020–2021',
+    p:'Led client communication and built website features.',
+    l:['Built dynamic features in HTML/CSS and Java, with an SQL database for content','Integrated PayPal and Stripe APIs for one-off and subscription payments','Presented progress at weekly client meetings'],
+    c:['HTML/CSS','Java','SQL','PayPal & Stripe APIs']},
+
+  v1:{t:'Excel & VBA Automation',g:'XL',bg:G.green,badge:'MOST BOOKED',m:'Service',y:'',p:'Turn hours of manual spreadsheet work into one click.',l:['Macros that merge, clean and summarise reports','Pivot dashboards that refresh automatically','Done before: cut data processing time by 50% at Doclan'],c:['Excel','VBA','Power Query']},
+  v2:{t:'SQL Reporting',g:'SQL',bg:G.teal,m:'Service',y:'',p:'Clear answers from your sales, customer or operations data.',l:['Queries and reports for revenue, customers and trends','Customer segmentation and retention analysis','See the UK Retail Sales Analysis project for an example'],c:['SQL','Reporting']},
+  v3:{t:'MS Access Databases',g:'DB',bg:G.blue,m:'Service',y:'',p:'Simple, structured databases that replace messy spreadsheets.',l:['Design and build Access databases with forms and reports','Fix or extend existing Access/VBA databases','Done before: central training-records system at dnata'],c:['MS Access','VBA']},
+  v4:{t:'Power Apps & Workflows',g:'PA',bg:G.plum,m:'Service',y:'',p:'Small apps and automated workflows for teams.',l:['Forms, approvals and polls that feed live reports','Done before: cut manual coordination effort by 60%+ at dnata'],c:['Power Apps','Automation']},
+  v5:{t:'Data Cleaning & Migration',g:'CSV',bg:G.slate,m:'Service',y:'',p:'Messy data made consistent, de-duplicated and ready to use.',l:['Clean, merge and validate CSV/Excel data','Move data between Shopify, Salesforce, LMS platforms and spreadsheets'],c:['Excel','Python','pandas']},
+  s1:{t:'SQL & Databases',g:'SQL',bg:G.teal,m:'Core skill',y:'',p:'Writing queries, designing data models and automating data jobs.',l:['Joins, CTEs and window functions','MS Access database design','Data cleaning and reconciliation'],c:['SQL','MS Access','Airtable']},
+  s2:{t:'Excel & VBA Automation',g:'XL',bg:G.green,m:'Core skill',y:'',p:'Turning manual reporting into one-click processes.',l:['Macros, pivot tables, advanced formulas','Batch scripts and VB scripts'],c:['Excel','VBA','Batch']},
+  s3:{t:'Power Apps & Platforms',g:'PA',bg:G.plum,m:'Core skill',y:'',p:'Low-code apps and the business platforms they connect to.',l:['Power Apps and automated workflows','Salesforce, Shopify, LearnWorlds admin'],c:['Power Apps','Salesforce','Shopify']},
+  s4:{t:'Python for Data Science',g:'PY',bg:G.slate,badge:'CERTIFIED',m:'Codecademy',y:'Mar 2026',p:'Skill Path certificate (credential ID 4F866580-1).',l:['Data analysis with pandas','Cleaning, merging, aggregation and transformation'],c:['Python','pandas']},
+  s5:{t:'BSc (Hons) First Class',g:'1st',bg:G.gold,m:'London Metropolitan University',y:'2021',p:'Business Computer Systems.',l:['Modules included Advanced Databases, E-commerce and Ethical Hacking','Also: HND Software Engineering (Merit), AAT Level 2 & 3 Accountancy','Microsoft MTA: Programming with HTML and CSS (2020)'],c:['Degree','HND','AAT']}
+};
+const rows = {tServices:['v1','v2','v3','v4','v5'],tProjects:['sql','coffee','greet','sites','vba','py'],tExp:['dnata','doclan','bhavan','dental','hit'],tSkills:['s1','s2','s3','s4','s5']};
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const card = k => { const d=D[k]; return `<button class="card" data-open="${k}"><div class="thumb" style="background:${d.bg}">${d.badge?`<span class="badge">${esc(d.badge)}</span>`:''}<span class="g">${esc(d.g)}</span><h3>${esc(d.t)}</h3></div><div class="cbody"><span class="m">${esc(d.m)}</span>${esc(d.y)}</div></button>`; };
+for (const id in rows) document.getElementById(id).innerHTML = rows[id].map(card).join('');
+
+const results = [['60%+','less manual coordination at dnata with Power Apps workflows','dnata'],['50%','faster data processing at Doclan with Excel and SQL automation','doclan'],['1st','Class BSc (Hons) Business Computer Systems','s5'],['5+','years running platform data and finances at The Bhavan','bhavan']];
+document.getElementById('tResults').innerHTML = results.map((r,i)=>`<button class="num" data-open="${r[2]}"><span class="n">${i+1}</span><span class="box"><span class="big">${r[0]}</span><span>${r[1]}</span></span></button>`).join('');
+
+// scroll arrows
+document.querySelectorAll('.row').forEach(row=>{
+  const t=row.querySelector('.track'); if(!t) return;
+  for (const dir of ['l','r']) { const b=document.createElement('button'); b.className='arrow '+dir; b.setAttribute('aria-label',dir==='l'?'Scroll left':'Scroll right'); b.textContent=dir==='l'?'‹':'›';
+    b.addEventListener('click',()=>t.scrollBy({left:(dir==='l'?-1:1)*t.clientWidth*.85,behavior:'smooth'})); row.appendChild(b); }
+});
+
+// modal
+const modal=document.getElementById('modal'); let lastFocus=null;
+const open = k => { const d=D[k]; if(!d) return; lastFocus=document.activeElement;
+  document.getElementById('mThumb').style.background=d.bg;
+  document.getElementById('mG').textContent=d.g; document.getElementById('mT').textContent=d.t;
+  document.getElementById('mMeta').innerHTML=`<span class="m">${esc(d.m)}</span>${d.y?`<span>${esc(d.y)}</span>`:''}`;
+  document.getElementById('mP').textContent=d.p;
+  document.getElementById('mL').innerHTML=d.l.map(x=>`<li>${esc(x)}</li>`).join('');
+  document.getElementById('mC').innerHTML=d.c.map(x=>`<span>${esc(x)}</span>`).join('');
+  document.getElementById('mA').innerHTML=d.a?`<a class="btn pri" href="${esc(d.a[1])}">${esc(d.a[0])}</a>`:'';
+  modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.getElementById('mClose').focus(); };
+const close = () => { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); if(lastFocus) lastFocus.focus(); };
+document.addEventListener('click',e=>{ const o=e.target.closest('[data-open]'); if(o){open(o.dataset.open);return;} if(e.target===modal) close(); });
+document.getElementById('mClose').addEventListener('click',close);
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+
+// profile picker: each viewer gets a different page
+const P = {
+  'Recruiter':{acc:'#1fd1b0',acc2:'#0f6e64',
+    greet:'The 30-second version, for recruiters',
+    tag:'PROFILE',tagline:'Candidate summary',title:'Ritesh Shetty',
+    meta:['Data & Automation','Slough, UK','First-Class BSc','Open to work'],
+    p:'An Excel, SQL and process-automation specialist with 4+ years of building tools that save teams time: 60%+ less manual work at dnata and 50% faster data processing at Doclan. Looking for Excel, SQL and data roles in the UK.',
+    btns:[['Contact me','mailto:rworkrs@gmail.com'],['See results','#results']],
+    order:['results','experience','skills','projects'],
+    cT:'Let\'s talk about the role',cP:'Available for Excel, SQL, data analyst and automation roles in the UK. Based in Slough, close to London and Berkshire. Full CV on request.',
+    links:['Email','LinkedIn','GitHub','Upwork']},
+  'Hiring manager':{acc:'#f2b544',acc2:'#8a5a12',
+    greet:'The detailed version: what I built and the impact it had',
+    tag:'FEATURED',tagline:'Featured project',title:'UK Retail Sales Analysis',
+    meta:['SQL deep-dive','2026','9 analyses','CTEs · Window functions · RFM · Cohorts'],
+    p:'Two years of sales for a fictional UK retailer, analysed end to end: revenue growth, customer segments, retention and a win-back list, each with a business recommendation.',
+    btns:[['View on GitHub','https://github.com/Rsts24/uk-retail-sql-analysis'],['More info','#open:sql']],
+    order:['projects','experience','results','skills'],
+    cT:'Want to see how I\'d approach your data?',cP:'Happy to walk you through any project, or take on a short practical task. All code is on GitHub.',
+    links:['GitHub','Email','LinkedIn','Upwork']},
+  'Client':{acc:'#7aa7ff',acc2:'#27467e',
+    greet:'Need something automated, cleaned or built?',
+    tag:'FOR HIRE',tagline:'Freelance services',title:'Stop doing it by hand',
+    meta:['Excel & VBA','SQL reports','Access databases','Power Apps'],
+    p:'I automate repetitive spreadsheet work, build reports and small databases, and clean up messy data, so your team gets hours back every week.',
+    btns:[['Hire me on Upwork','https://www.upwork.com/freelancers/~01caf4e3e60160f363'],['See services','#services']],
+    order:['services','results','projects','experience','skills'],
+    cT:'Tell me what\'s slowing you down',cP:'Send me the task: a report you rebuild every week, a messy spreadsheet, a process that needs a form. I\'ll reply with how I\'d automate it.',
+    links:['Upwork','Email','LinkedIn','GitHub']}
+};
+const linkEls={}; document.querySelectorAll('#cLinks a').forEach(a=>linkEls[a.firstChild.textContent.trim()]=a);
+const play='<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="currentColor"/></svg>';
+const info='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7.5v.5"/></svg>';
+const pick = w => { const c=P[w]; if(!c) return;
+  document.getElementById('gate').classList.add('hide');
+  const root=document.documentElement.style; root.setProperty('--acc',c.acc); root.setProperty('--acc2',c.acc2);
+  document.getElementById('whoName').textContent=w;
+  const av=document.getElementById('whoAv'); av.textContent=w[0]; av.style.background=c.acc;
+  document.getElementById('greet').textContent=c.greet;
+  document.getElementById('hero').innerHTML=`<span class="tag"><b>${esc(c.tag)}</b> ${esc(c.tagline)}</span><h1>${esc(c.title)}</h1><div class="meta">${c.meta.map((m,i)=>i===0?`<span class="m">${esc(m)}</span>`:i===2?`<span class="pill">${esc(m)}</span>`:`<span>${esc(m)}</span>`).join('')}</div><p>${esc(c.p)}</p><div class="btns">`+
+    c.btns.map((b,i)=>b[1].startsWith('#open:')?`<button class="btn sec" data-open="${esc(b[1].slice(6))}">${info}${esc(b[0])}</button>`:`<a class="btn ${i?'sec':'pri'}" href="${esc(b[1])}">${i?info:play}${esc(b[0])}</a>`).join('')+'</div>';
+  document.querySelectorAll('main>.row').forEach(r=>{ const i=c.order.indexOf(r.id); r.classList.toggle('off',i<0); r.style.order=i<0?50:i; });
+  document.getElementById('cT').textContent=c.cT; document.getElementById('cP').textContent=c.cP;
+  const box=document.getElementById('cLinks'); c.links.forEach(n=>box.appendChild(linkEls[n]));
+  scrollTo(0,0); try{sessionStorage.setItem('who',w)}catch(e){} };
+document.querySelectorAll('.prof').forEach(b=>b.addEventListener('click',()=>pick(b.dataset.who)));
+let saved=null; try{ saved=sessionStorage.getItem('who'); }catch(e){}
+pick(P[saved]?saved:'Hiring manager');
+if(!P[saved]) document.getElementById('gate').classList.remove('hide');
+document.getElementById('whoAv').addEventListener('click',()=>document.getElementById('gate').classList.remove('hide'));
+document.getElementById('whoName').addEventListener('click',()=>document.getElementById('gate').classList.remove('hide'));
+
+// top bar solid on scroll
+const top=document.getElementById('top');
+addEventListener('scroll',()=>top.classList.toggle('solid',scrollY>40),{passive:true});
+
+// hero data landscape
+const vals=[42,48,55,51,60,57,63,58,66,71,86,92,58,74,79,77,85,83,88,90,89,104,124,138];
+const x0=440,w=31,base=600; let bars='',pts=[];
+vals.forEach((v,i)=>{ const h=v*3.2,x=x0+i*w; bars+=`<rect class="rise" style="transform-origin:${x}px ${base}px;animation-delay:${i*40}ms" x="${x}" y="${base-h}" width="${w-8}" height="${h}" rx="3" fill="url(#${i>=12?'bar':'bar2'})"/>`; pts.push([x+(w-8)/2,base-h-24]); });
+document.getElementById('bars').innerHTML=bars;
+document.getElementById('trend').setAttribute('d','M'+pts.map(p=>p.join(' ')).join(' L'));
+document.getElementById('dots').innerHTML=pts.filter((_,i)=>i%4===3||i===pts.length-1).map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="#0b0d12" style="stroke:var(--acc)" stroke-width="3"/>`).join('');
+}
+</script>
+</body>
+</html>
