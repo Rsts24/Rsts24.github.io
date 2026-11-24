@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ritesh Shetty Workbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: precise, quietly witty: a CV you audit like a well-kept workbook
+   IDEA: the career as a spreadsheet file: sheet tabs, a formula bar, cells that hold their working
+   PICTURE: the live grid itself, filling the screen, with a bar-chart sheet for results
+   COLOUR and TYPE: white grid and hairline greys, one deep teal for selection and headers; Inter + Plex Mono for the formula bar
+   LAYOUT: title bar, formula bar, grid, sheet tabs, status bar: the shape of a real workbook */
+:root{color-scheme:light dark;
+ --bg:light-dark(#f3f5f4,#0f1412);--paper:light-dark(#ffffff,#151b19);--ink:light-dark(#18211e,#e6ece9);--mute:light-dark(#66736e,#8f9c97);
+ --line:light-dark(#e1e6e4,#26302d);--hdr:light-dark(#f1f4f3,#1b2320);--hdrink:light-dark(#55625d,#8f9c97);
+ --acc:light-dark(#0f6e64,#2fd0b3);--accsoft:light-dark(#e2f3f0,#123a34);--chrome:light-dark(#0f3d37,#0b1f1c)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* title bar */
+.bar{background:var(--chrome);color:#e9f5f2;display:flex;align-items:center;gap:16px;padding:10px max(2vw,12px);flex-wrap:wrap}
+.brand{font:800 20px/1 Syne,Inter,sans-serif;letter-spacing:.02em;color:#2fd0b3;text-decoration:none}
+.brand span{color:#fff}
+.file{font-size:14px;color:#cfe6e1;display:flex;align-items:center;gap:8px}
+.file svg{width:16px;height:16px}
+.saved{font-size:12px;color:#8fc2b8}
+.bar .sp{flex:1}
+.view{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border-radius:6px;background:#ffffff1a;color:#fff;text-decoration:none;font-weight:600;font-size:13px}
+.view:hover{background:#ffffff2e}
+
+/* formula bar */
+.fx{display:flex;align-items:stretch;gap:0;background:var(--paper);border-bottom:1px solid var(--line);font:13px/1 "IBM Plex Mono",ui-monospace,monospace}
+.name{width:84px;flex:none;padding:9px 10px;border-right:1px solid var(--line);color:var(--ink);text-align:center}
+.fxl{flex:none;padding:9px 10px;color:var(--mute);font-style:italic;border-right:1px solid var(--line)}
+.fxv{flex:1;padding:9px 12px;white-space:nowrap;overflow-x:auto;color:var(--ink)}
+.fxv .fn{color:var(--acc);font-weight:500}
+
+/* grid */
+.wrap{flex:1;overflow:auto;background:var(--paper);position:relative}
+table{border-collapse:separate;border-spacing:0;font-size:14px}
+th,td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);height:34px;padding:0 10px;white-space:nowrap;text-align:left;font-weight:400}
+thead th{position:sticky;top:0;z-index:2;background:var(--hdr);color:var(--hdrink);font-size:12px;text-align:center;font-weight:500;height:26px}
+tbody th{position:sticky;left:0;z-index:1;background:var(--hdr);color:var(--hdrink);font-size:12px;text-align:center;width:46px;min-width:46px;padding:0}
+thead th.corner{left:0;z-index:3;width:46px}
+thead th.on,tbody th.on{background:var(--accsoft);color:var(--acc);font-weight:700}
+td{cursor:cell;position:relative;max-width:520px;overflow:hidden;text-overflow:ellipsis}
+td.sel{outline:2px solid var(--acc);outline-offset:-2px;z-index:1;background:color-mix(in srgb,var(--acc) 6%,transparent)}
+td.h{font-weight:600;background:var(--accsoft);color:var(--acc)}
+td.title{font:700 22px/1.1 Inter,sans-serif;height:46px}
+td.sub{color:var(--mute)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+td.big{font-weight:700;font-size:17px;color:var(--acc);text-align:right;font-variant-numeric:tabular-nums}
+td.note{color:var(--mute);font-style:italic}
+td.wrap-t{white-space:normal;line-height:1.35;padding-block:6px}
+td a{color:var(--acc);font-weight:600;text-underline-offset:3px}
+td .pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:10px;background:var(--accsoft);color:var(--acc);font-weight:600}
+td .soon{background:light-dark(#f4ede0,#2c2617);color:light-dark(#7a5a12,#e3bd6a)}
+.barcell{display:flex;align-items:center;gap:8px;min-width:220px}
+.barcell i{display:block;height:14px;border-radius:2px;background:var(--acc)}
+.barcell b{font-variant-numeric:tabular-nums;font-weight:600;font-size:13px}
+.cnote::after{content:"";position:absolute;right:0;top:0;border:5px solid transparent;border-right-color:var(--acc);border-top-color:var(--acc)}
+
+/* tabs + status */
+.tabs{display:flex;align-items:stretch;background:var(--hdr);border-top:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;border:0;border-right:1px solid var(--line);background:none;color:var(--mute);padding:0 18px;min-height:40px;font-size:13px;font-weight:500}
+.tabs button[aria-selected=true]{background:var(--paper);color:var(--acc);font-weight:700;box-shadow:inset 0 -3px 0 var(--acc)}
+.tabs button:hover{color:var(--ink)}
+.status{display:flex;gap:18px;align-items:center;padding:5px max(2vw,12px);background:var(--chrome);color:#cfe6e1;font-size:12px}
+.status .sp{flex:1}
+.hint{color:#8fc2b8}
+@media(max-width:600px){.saved,.hint{display:none}.name{width:60px}.fxl{display:none}td{max-width:300px}td.title{font-size:18px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="brand" href="../">RITESH<span>.</span></a>
+  <span class="file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></svg>Ritesh_Shetty_Career.xlsx</span>
+  <span class="saved">All changes saved · read-only for visitors</span>
+  <span class="sp"></span>
+  <a class="view" href="../">▶ Streaming view</a>
+</header>
+
+<div class="fx" role="group" aria-label="Formula bar">
+  <div class="name" id="nameBox" aria-label="Selected cell">A1</div>
+  <div class="fxl">fx</div>
+  <div class="fxv" id="fxBox" aria-live="polite"></div>
+</div>
+
+<div class="wrap" id="wrap">
+  <table id="grid" aria-label="Spreadsheet"></table>
+</div>
+
+<nav class="tabs" id="tabs" role="tablist" aria-label="Sheets"></nav>
+<footer class="status">
+  <span id="stLeft">Ready</span>
+  <span class="hint">Click any cell to see its formula · arrow keys move · Enter opens links</span>
+  <span class="sp"></span>
+  <span id="stRight"></span>
+</footer>
+
+<script>
+{
+const L = {
+  email:'mailto:rworkrs@gmail.com', linkedin:'https://www.linkedin.com/in/rks258', github:'https://github.com/Rsts24',
+  upwork:'https://www.upwork.com/freelancers/~01caf4e3e60160f363', sql:'https://github.com/Rsts24/uk-retail-sql-analysis',
+  stampo:'https://github.com/Rsts24/stampo-crypto-buddy', stampoApp:'https://stampo-stamps.lovable.app'
+};
+// cell helpers: plain string, or {v, f, c (class), href, html, note}
+const H = v => ({v, c:'h'});
+const N = (v,f) => ({v, f, c:'num'});
+const A = (label, href, f) => ({v:label, href, f: f || `=HYPERLINK("${href.replace('mailto:','')}","${label}")`});
+
+const SHEETS = [
+ {id:'summary', name:'Summary', widths:[170,460], rows:[
+   [{v:'Ritesh Shetty',c:'title',f:'="Ritesh"&" "&"Shetty"'}],
+   [{v:'Data & Process Automation · Slough, UK',c:'sub'}],
+   [],
+   [H('Field'),H('Value')],
+   ['Looking for','Excel, SQL and data automation roles in the UK, plus freelance work'],
+   ['Core skills',{v:'SQL · Excel/VBA · MS Access · Power Apps · PostgreSQL · Python',f:'=TEXTJOIN(" · ",TRUE,Skills!A3:A8)'}],
+   ['Headline results',{v:'60%+ less manual coordination (dnata) · 50% faster data processing (Doclan)',f:'=Results!C3&" (dnata) · "&Results!C4&" (Doclan)"'}],
+   ['Education',{v:'BSc (Hons) Business Computer Systems, First Class',f:'=Education!A3&", "&Education!D3'}],
+   ['Based in','Slough, UK: easy reach of London and Berkshire'],
+   ['Status',{v:'Open to work',f:'=IF(AVAILABLE,"Open to work","Busy")',html:'<span class="pill">Open to work</span>'}],
+   [],
+   [{v:'Tip: click a cell to see how it was worked out. The tabs below hold the detail.',c:'note'}],
+ ]},
+ {id:'experience', name:'Experience', widths:[250,230,92,92,82,420], rows:[
+   [H('Role'),H('Company'),H('From'),H('To'),H('Months'),H('Key result')],
+   ['L&D Systems & Operations','dnata','Jul 2025','Nov 2025',N(4,'=DATEDIF(C2,D2,"m")'),{v:'Power Apps workflows cut manual coordination effort by over 60%; built a central MS Access training database',c:'wrap-t'}],
+   ['Mainframe Designer / Data Engineer','Doclan Management Service','Feb 2022','Oct 2024',N(32,'=DATEDIF(C3,D3,"m")'),{v:'Excel pivots, macros and formulas cut data processing time by 50%; automation with SQL, VB scripts and batch files',c:'wrap-t'}],
+   ['Operations Assistant Manager (weekends)','The Bhavan','Jul 2021',{v:'Present',f:'=TODAY()'},N(64,'=DATEDIF(C4,TODAY(),"m")'),{v:'Salesforce, Shopify and LearnWorlds data admin and GDPR compliance; weekly finance analysis and month-end bank reconciliation',c:'wrap-t'}],
+   ['Administrative Manager','Private Dental Practice, Wembley','Jan 2026','Mar 2026',N(2,'=DATEDIF(C5,D5,"m")'),{v:'Analysed Dentally data to improve scheduling; CQC, GDPR and health & safety compliance',c:'wrap-t'}],
+   ['Website Developer (student work)','HIT – The Theatre','Nov 2020','Jul 2021',N(8,'=DATEDIF(C6,D6,"m")'),{v:'SQL-backed site features; PayPal and Stripe payment integration',c:'wrap-t'}],
+   [],
+   ['','','','Total',{v:110,c:'big',f:'=SUM(E2:E6)'},{v:'months across five roles',c:'note'}],
+ ]},
+ {id:'results', name:'Results', widths:[270,130,110,300], rows:[
+   [{v:'Results from real roles',c:'title'}],
+   [H('What changed'),H('Where'),H('Impact'),H('Chart')],
+   ['Manual coordination effort','dnata',{v:'60%+',c:'big',f:'=1-AFTER/BEFORE  ·  Power Apps workflows'},{v:'',html:'<span class="barcell"><i style="width:120px"></i><b>60%+</b></span>',f:'=REPT("█",Results!C3*20)'}],
+   ['Data processing time','Doclan',{v:'50%',c:'big',f:'=1-AFTER/BEFORE  ·  Excel macros, pivots and formulas'},{v:'',html:'<span class="barcell"><i style="width:100px"></i><b>50%</b></span>',f:'=REPT("█",Results!C4*20)'}],
+   ['Degree classification','London Met',{v:'1st',c:'big',f:'=Education!D3'},{v:'First Class Honours',c:'sub'}],
+   ['Years running platform data & finances','The Bhavan',{v:'5+',c:'big',f:'=DATEDIF("01/07/2021",TODAY(),"y")'},{v:'Weekends, alongside full-time roles',c:'sub'}],
+   [],
+   [{v:'Percentages are reductions in time or effort reported in each role.',c:'note'}],
+ ]},
+ {id:'projects', name:'Projects', widths:[250,140,64,320,150,130], rows:[
+   [H('Project'),H('Type'),H('Year'),H('What it shows'),H('Open'),H('Code')],
+   ['UK Retail Sales Analysis','SQL analysis',N(2026),{v:'9 analyses: revenue trends, RFM segments, cohort retention, market basket',c:'wrap-t'},A('Results',L.sql+'/tree/main/results'),A('Repository',L.sql)],
+   ['Stampo','Full-stack app',N(2026),{v:'Coffee-shop loyalty app on Supabase/PostgreSQL: 8 tables, row-level security, 12 SQL migrations',c:'wrap-t'},A('Try the app',L.stampoApp),A('Repository',L.stampo)],
+   ['Occasion Greetings Page','Web',N(2025),'Dynamic occasion page deployed on Netlify','',A('GitHub',L.github)],
+   ['Client websites ×2','Freelance',{v:'2024–25',c:'num'},{v:'AI-powered features, design to delivery, for two small businesses',c:'wrap-t'},'',''],
+   ['Excel VBA Automation Toolkit','Excel / VBA','',{v:'',html:'<span class="pill soon">Coming soon</span>'},'',''],
+   ['Python Excel Report Builder','Python','',{v:'',html:'<span class="pill soon">Coming soon</span>'},'',''],
+ ]},
+ {id:'skills', name:'Skills', widths:[210,380,90], rows:[
+   [{v:'Where each skill was used',c:'title'}],
+   [H('Skill'),H('Used at'),H('Places')],
+   ['SQL','Doclan · HIT – The Theatre · Stampo · Retail Sales Analysis',N(4,'=COUNTA(SPLIT(B3," · "))')],
+   ['Excel & VBA','Doclan · dnata',N(2,'=COUNTA(SPLIT(B4," · "))')],
+   ['MS Access','dnata · Doclan',N(2,'=COUNTA(SPLIT(B5," · "))')],
+   ['Power Apps & workflows','dnata',N(1,'=COUNTA(SPLIT(B6," · "))')],
+   ['PostgreSQL (Supabase)','Stampo',N(1,'=COUNTA(SPLIT(B7," · "))')],
+   ['Python (pandas)','Codecademy certificate (2026)',N(1,'=COUNTA(SPLIT(B8," · "))')],
+   ['Salesforce · Shopify · LearnWorlds','The Bhavan',N(1,'=COUNTA(SPLIT(B9," · "))')],
+   ['Visio diagrams','Doclan',N(1,'=COUNTA(SPLIT(B10," · "))')],
+   ['HTML/CSS · Java · payment APIs','HIT – The Theatre · freelance sites',N(2,'=COUNTA(SPLIT(B11," · "))')],
+   ['Bank reconciliation & invoicing','The Bhavan · AAT Level 2 & 3',N(2,'=COUNTA(SPLIT(B12," · "))')],
+ ]},
+ {id:'education', name:'Education', widths:[330,260,70,130], rows:[
+   [{v:'Education & certificates',c:'title'}],
+   [H('Qualification'),H('Institution'),H('Year'),H('Result')],
+   ['BSc (Hons) Business Computer Systems','London Metropolitan University',N(2021),{v:'First Class',html:'<span class="pill">First Class</span>'}],
+   ['HND Software Engineering','Windsor Forest Colleges Group',N(2020),'Merit'],
+   ['AAT Level 2 & 3 Accountancy','AAT','','Completed'],
+   ['Python for Data Science (Skill Path)','Codecademy',N(2026),{v:'Certificate',f:'Credential ID 4F866580-1'}],
+   ['MTA: Programming with HTML and CSS','Microsoft',N(2020),'Certified'],
+ ]},
+ {id:'contact', name:'Contact', widths:[130,330,240], rows:[
+   [{v:'Get in touch',c:'title'}],
+   [H('Channel'),H('Address'),H('Best for')],
+   ['Email',A('rworkrs@gmail.com',L.email),'Roles and interviews'],
+   ['LinkedIn',A('linkedin.com/in/rks258',L.linkedin),'Recruiters'],
+   ['GitHub',A('github.com/Rsts24',L.github),'Code and projects'],
+   ['Upwork',A('Excel VBA & MS Access Developer',L.upwork),'Freelance work'],
+   ['Portfolio',A('Streaming view','../','=HYPERLINK("rsts24.github.io","Streaming view")'),'The visual version'],
+ ]},
+];
+
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const col = i => String.fromCharCode(65+i);
+const grid=document.getElementById('grid'), nameBox=document.getElementById('nameBox'), fxBox=document.getElementById('fxBox');
+const tabs=document.getElementById('tabs'), stLeft=document.getElementById('stLeft'), stRight=document.getElementById('stRight');
+let cur=0, sel={r:0,c:0};
+const norm = x => (x==null||x==='') ? {v:''} : (typeof x==='object' ? x : {v:x});
+
+tabs.innerHTML = SHEETS.map((s,i)=>`<button role="tab" id="tab-${s.id}" aria-selected="false" data-i="${i}">${esc(s.name)}</button>`).join('');
+
+function render(){
+  const s=SHEETS[cur], ncol=s.widths.length+1, nrow=Math.max(s.rows.length+4,16);
+  let h='<colgroup><col style="width:46px">'+s.widths.map(w=>`<col style="width:${w}px">`).join('')+'<col style="width:120px"></colgroup>';
+  h+='<thead><tr><th class="corner"></th>'+Array.from({length:ncol},(_,c)=>`<th data-col="${c}">${col(c)}</th>`).join('')+'</tr></thead><tbody>';
+  for(let r=0;r<nrow;r++){
+    const row=s.rows[r]||[];
+    h+=`<tr><th data-row="${r}">${r+1}</th>`;
+    for(let c=0;c<ncol;c++){
+      const d=norm(row[c]); const span = (d.c==='title'||d.c==='note'||d.c==='sub') && row.length===1 ? ` colspan="${ncol}"` : '';
+      let inner = d.html ? d.html : d.href ? `<a href="${esc(d.href)}" tabindex="-1">${esc(d.v)}</a>` : esc(d.v);
+      h+=`<td data-r="${r}" data-c="${c}" class="${d.c||''}${d.f?' cnote':''}"${span}>${inner}</td>`;
+      if(span) break;
+    }
+    h+='</tr>';
+  }
+  grid.innerHTML=h+'</tbody>';
+  [...tabs.children].forEach((b,i)=>b.setAttribute('aria-selected',i===cur));
+  const filled=s.rows.filter(r=>r.length).length;
+  stRight.textContent=`${s.name} · ${filled} rows`;
+  select(sel.r,sel.c,true);
+}
+
+function cellAt(r,c){ return grid.querySelector(`td[data-r="${r}"][data-c="${c}"]`); }
+function select(r,c,quiet){
+  const s=SHEETS[cur], ncol=s.widths.length+1, nrow=grid.tBodies[0].rows.length;
+  r=Math.max(0,Math.min(nrow-1,r)); c=Math.max(0,Math.min(ncol-1,c));
+  let td=cellAt(r,c); if(!td){ c=0; td=cellAt(r,0); }
+  grid.querySelectorAll('.sel,.on').forEach(e=>e.classList.remove('sel','on'));
+  td.classList.add('sel'); sel={r,c};
+  grid.querySelector(`thead th[data-col="${c}"]`)?.classList.add('on');
+  grid.querySelector(`tbody th[data-row="${r}"]`)?.classList.add('on');
+  const d=norm((s.rows[r]||[])[c]);
+  nameBox.textContent=col(c)+(r+1);
+  const shown = d.f || (d.v===''?'':String(d.v));
+  fxBox.innerHTML = shown.startsWith('=') ? esc(shown).replace(/^=([A-Z]+)/,'=<span class="fn">$1</span>') : esc(shown);
+  stLeft.textContent = d.href ? 'Link · press Enter to open' : (typeof d.v==='number' ? `Value: ${d.v}` : 'Ready');
+  if(!quiet) td.scrollIntoView({block:'nearest',inline:'nearest'});
+}
+
+function openSheet(i, fromHash){
+  cur=i; sel={r:0,c:0}; render();
+  if(!fromHash){ try{ history.replaceState(null,'','#'+SHEETS[i].id); }catch(e){ location.hash=SHEETS[i].id; } }
+}
+
+grid.addEventListener('click',e=>{ const td=e.target.closest('td'); if(!td) return; select(+td.dataset.r,+td.dataset.c); if(e.target.closest('a')) return; });
+tabs.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) openSheet(+b.dataset.i); });
+document.addEventListener('keydown',e=>{
+  if(e.target.closest?.('.tabs')&&!['ArrowUp','ArrowDown'].includes(e.key)) { if(e.key==='ArrowRight'||e.key==='ArrowLeft'){ e.preventDefault(); const n=(cur+(e.key==='ArrowRight'?1:-1)+SHEETS.length)%SHEETS.length; openSheet(n); tabs.children[n].focus(); } return; }
+  const m={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1],Tab:[0,1]}[e.key];
+  if(m && !(e.key==='Tab')){ e.preventDefault(); select(sel.r+m[0],sel.c+m[1]); }
+  else if(e.key==='Enter'){ const a=cellAt(sel.r,sel.c)?.querySelector('a'); if(a) a.click(); }
+  else if(e.key==='PageDown'||e.key==='PageUp'){ e.preventDefault(); openSheet((cur+(e.key==='PageDown'?1:-1)+SHEETS.length)%SHEETS.length); }
+});
+const fromHash=()=>{ const i=SHEETS.findIndex(s=>'#'+s.id===location.hash); openSheet(i<0?0:i,true); };
+addEventListener('hashchange',fromHash);
+fromHash();
+}
+</script>
+</body>
+</html>
